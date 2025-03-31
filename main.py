@@ -3,12 +3,18 @@ from db import main_db
 
 def main(page: ft.Page):
     page.title = 'Список Покупок'
-
+    def add_product(e):
+        if product_input.value.strip():
+            product_id = main_db.add_products_db(product_input.value)
+            product_list.controls.append(create_product_row(product_id, product_input.value, False))
+            product_input.value = ""
+            page.update()
     product_input = ft.TextField(
         hint_text='Добавьте товар',
         expand=True,
         dense=True,
-        color=ft.colors.RED_400
+        color=ft.colors.RED_400,
+        on_submit=add_product
     )
 
     product_list = ft.Column(spacing=10)
@@ -52,12 +58,7 @@ def main(page: ft.Page):
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN
         )
 
-    def add_product(e):
-        if product_input.value.strip():
-            product_id = main_db.add_products_db(product_input.value)
-            product_list.controls.append(create_product_row(product_id, product_input.value, False))
-            product_input.value = ""
-            page.update()
+    
 
     add_button = ft.ElevatedButton("Добавить", icon=ft.icons.ADD, on_click=add_product)
 
